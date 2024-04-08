@@ -1,9 +1,9 @@
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 import static junit.framework.TestCase.assertEquals;
 
 public class BasicTest extends TestHelper {
-
 
     private String username = "johan";
     private String password = "password";
@@ -23,7 +23,7 @@ public class BasicTest extends TestHelper {
     Fill in loginLogoutTest() and login mehtod in TestHelper, so that the test passes correctly.
 
      */
-    // @Test
+    @Test
     public void loginLogoutTest(){
 
         login(username, password);
@@ -31,6 +31,8 @@ public class BasicTest extends TestHelper {
         // assert that correct page appeared
         // WebElement adminHeader = driver.findElement...
         // ...
+        boolean inpresent = isElementPresent(By.linkText("New product"));
+        assertEquals(true, inpresent);
 
         logout();
     }
