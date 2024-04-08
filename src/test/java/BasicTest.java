@@ -5,8 +5,8 @@ import static junit.framework.TestCase.assertEquals;
 public class BasicTest extends TestHelper {
 
 
-    private String username = "";
-    private String password = "";
+    private String username = "johan";
+    private String password = "password";
 
     @Test
     public void titleExistsTest(){

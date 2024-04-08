@@ -17,7 +17,7 @@ public class TestHelper {
     final int waitForResposeTime = 4;
 	
 	// here write a link to your admin website (e.g. http://my-app.herokuapp.com/admin)
-    String baseUrlAdmin = "...";
+    String baseUrlAdmin = "http://127.0.0.1:3000/admin";
 	
 	// here write a link to your website (e.g. http://my-app.herokuapp.com/)
     String baseUrl = "http://127.0.0.1:3000/";
@@ -25,13 +25,9 @@ public class TestHelper {
     @Before
     public void setUp(){
 
-        // if you use Chrome:
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\...\\chromedriver.exe");
-        driver = new ChromeDriver();
-
         // if you use Firefox:
-        //System.setProperty("webdriver.gecko.driver", "C:\\Users\\...\\geckodriver.exe");
-        //driver = new FirefoxDriver();
+        System.setProperty("webdriver.gecko.driver", "C:\\Users\\johan\\kool\\swt\\geckodriver.exe");
+        driver = new FirefoxDriver();
 
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get(baseUrl);
@@ -39,9 +35,7 @@ public class TestHelper {
     }
 
     void goToPage(String page){
-        WebElement elem = driver.findElement(By.linkText(page));
-        elem.click();
-        waitForElementById(page);
+        driver.get(baseUrl + page);
     }
 
     void waitForElementById(String id){
@@ -58,6 +52,22 @@ public class TestHelper {
         }
     }
 
+    public void createUser(String username, String password){
+        goToPage("admin");
+
+        driver.findElement(By.linkText("Register")).click();
+        driver.findElement(By.id("user_name")).click();
+        driver.findElement(By.id("user_name")).sendKeys(username);
+        driver.findElement(By.id("user_password")).sendKeys(password);
+        driver.findElement(By.id("user_password_confirmation")).sendKeys(password);
+        driver.findElement(By.name("commit")).click();
+    }
+
+    public void deleteUser(String username){
+        goToPage("admin");
+        driver.findElement(By.xpath("//p[@id='" + username + "']/a[2]")).click();
+    }
+
     void login(String username, String password){
 
         driver.get(baseUrlAdmin);
@@ -65,18 +75,16 @@ public class TestHelper {
         driver.findElement(By.linkText("Login")).click();
 
         driver.findElement(By.id("name")).sendKeys(username);
-
-        // ...
+        driver.findElement(By.id("password")).sendKeys(password);
 
         By loginButtonXpath = By.xpath("//input[@value='Login']");
-        // click on the button
-        // ...
+        driver.findElement(loginButtonXpath).click();
     }
 
     void logout(){
+        goToPage("admin");
         WebElement logout = driver.findElement(By.linkText("Logout"));
         logout.click();
-
         waitForElementById("Admin");
     }
 
