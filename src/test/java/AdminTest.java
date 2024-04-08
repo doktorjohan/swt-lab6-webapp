@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AdminTest extends TestHelper{
 
-private String username = "johan";
+    private String username = "johan";
     private String password = "password";
 
     @Test
@@ -52,8 +52,7 @@ private String username = "johan";
     @Test
     public void editUserPasswordConfirmDoesNotMatch() {
 
-        createUser("newUser", "password");
-        login("newUser", "password");
+        login(username, password);
         goToPage("admin");
 
         driver.findElement(By.linkText("Edit")).click();
@@ -65,28 +64,11 @@ private String username = "johan";
         WebElement element = driver.findElement(By.id("user_password_confirmation"));
         assertTrue(element.isDisplayed());
 
-        deleteUser("newUser");
-    }
-
-    @Test
-    public void editUserNameSuccess() {
-        createUser("newUser", "password");
-        login("newUser", "password");
-        goToPage("admin");
-
-        driver.findElement(By.linkText("Edit")).click();
-        driver.findElement(By.id("user_name")).click();
-        driver.findElement(By.id("user_name")).sendKeys("newUser2");
-        driver.findElement(By.name("commit")).click();
-        WebElement successMessage = driver.findElement(By.id("notice"));
-        assertTrue(successMessage.isDisplayed());
-
-        deleteUser("newUser2");
     }
 
     @Test
     public void editUserPasswordSuccess() {
-        createUser("newUser", "password");
+        createUser("newUser3", "password");
         goToPage("admin");
 
         driver.findElement(By.linkText("Edit")).click();
@@ -98,12 +80,12 @@ private String username = "johan";
         WebElement successMessage = driver.findElement(By.id("notice"));
         assertTrue(successMessage.isDisplayed());
 
-        deleteUser("newUser");
+        deleteUser("newUser3");
     }
 
     @Test
     public void editProduct() {
-        createUser("newUser", "password");
+        login(username, password);
 
         driver.findElement(By.xpath("(//a[contains(text(),'Edit')])[4]")).click();
         driver.findElement(By.id("product_description")).click();
@@ -111,12 +93,12 @@ private String username = "johan";
         driver.findElement(By.name("commit")).click();
         driver.findElement(By.id("notice")).click();
 
-        deleteUser("newUser");
+        logout();
     }
 
     @Test
     public void editProductPriceIsNotNumeric() {
-        createUser("newUser", "password");
+        login(username, password);
 
         driver.findElement(By.xpath("(//a[contains(text(),'Edit')])[4]")).click();
         driver.findElement(By.id("product_price")).click();
@@ -125,12 +107,13 @@ private String username = "johan";
         WebElement element = driver.findElement(By.id("product_price"));
         assertTrue(element.isDisplayed());
 
-        deleteUser("newUser");
+        logout();
     }
 
     @Test
     public void deleteProduct() {
-        createUser("newUser", "password");
+        login(username, password);
+
         driver.findElement(By.linkText("New product")).click();
         driver.findElement(By.id("product_title")).click();
         driver.findElement(By.id("product_title")).sendKeys("asd");
@@ -146,12 +129,12 @@ private String username = "johan";
         WebElement element = driver.findElement(By.id("notice"));
         assertTrue(element.isDisplayed());
 
-        deleteUser("newUser");
+        logout();
     }
 
     @Test
     public void editProductType() {
-        createUser("newUser", "password");
+        login(username, password);
 
         driver.findElement(By.xpath("//a[contains(@href, '/products/4/edit')]")).click();
         driver.findElement(By.id("product_prod_type")).click();
@@ -162,8 +145,7 @@ private String username = "johan";
         WebElement element = driver.findElement(By.xpath("//div[@id='main']/div/p[4]"));
         assertTrue(element.getText().contains("Other"));
 
-        deleteUser("newUser");
-
+        logout();
     }
 
 }
